@@ -23,7 +23,7 @@ namespace DataModel.Abstraction
             var json = JsonSerializer.Serialize(users);
 
             // Write the JSON string to the users.json file
-            File.WriteAllText(FilePath, json);
+            File.WriteAllText(FilePath, json);  
         }
     }
 }

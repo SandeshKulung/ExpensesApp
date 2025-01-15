@@ -10,6 +10,7 @@ namespace DataAccess.Services
 
         public const string SeedUsername = "admin";
         public const string SeedPassword = "password";
+        public const string SeedCurrency_Type = "";
 
         public UserService()
         {
