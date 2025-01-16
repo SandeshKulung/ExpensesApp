@@ -10,6 +10,9 @@ namespace Week6MAUI.Components.Pages
         decimal totalIncomeAmount = 0;
         decimal totalDebtAmount = 0;
         decimal totalExpensesAmount = 0;
+        decimal RemainingDebt = 0;
+        private DateTime StartDate { get; set; } = DateTime.Today.AddDays(-30);
+        private DateTime EndDate { get; set; } = DateTime.Today;
         string currencyType = Preferences.Get("Currency_Type", "Rs");
         private List<Transaction> Expenses { get; set; } = new List<Transaction>();
         private List<TransactionDto> FilteredExpenses { get; set; } = new List<TransactionDto>();
@@ -22,6 +25,7 @@ namespace Week6MAUI.Components.Pages
         private void ApplyFilter()
         {
             List<TransactionDto> transactionDtos = Expenses
+                .Where(e => e.Date >= StartDate && e.Date <= EndDate.AddDays(1))
      .Select(e => new TransactionDto
      {
          TransactionId = e.TransactionId,
@@ -41,6 +45,13 @@ namespace Week6MAUI.Components.Pages
             TotalRemainingAmount = totalIncomeAmount + totalDebtAmount - totalExpensesAmount;
 
             FilteredExpenses = transactionDtos.Take(5).ToList();
+
+
+            var amount = Expenses.Where(x => x.Type == "debt" || x.Type == "cleardebt").ToList();
+
+            var totaldebt = Expenses.Where(x => x.Type == "debt").Sum(e => e.Amount);
+            var ClearedDebt = Expenses.Where(x => x.Type == "cleardebt").Sum(e => e.Amount);
+            RemainingDebt = totaldebt - ClearedDebt;
         }
         private void NavigateToIncomeTrack()
         {

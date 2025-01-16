@@ -277,17 +277,27 @@ button.btn-primary:hover {
     }
 }
 
+    .action-buttons {
+        margin: 4%;
+    }
 </style>
 <h3>Debt Tracker</h3>
 
 <div class="total-expenses">
     <p>Total Debt: @currencyType <strong>@TotalExpenses.ToString()</strong></p>
+    <p>Paid Debt: @currencyType <strong>@ClearedDebt.ToString()</strong></p>
+    <p>Remaining Debt: @currencyType <strong>@RemainingDebt.ToString()</strong></p>
+</div>
+<div class="action-buttons">
+    <button class="btn btn-secondary" @onclick="HighestSort">Highest</button>
+    <button class="btn btn-secondary" @onclick="LowestSort">Lowest</button>
 </div>
 <div class="expenses-list">
     <table class="table">
         <thead>
             <tr>
                 <th>Transaction ID</th>
+                <th>Type</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Note</th>
@@ -298,6 +308,7 @@ button.btn-primary:hover {
             {
                                 <tr>
                         <td>@(index + 1)</td>
+                    <td>@expense.Type</td>
                     <td>@currencyType @expense.Amount.ToString()</td>
                                     <td>@expense.Date.ToShortDateString()</td>
                                     <td>@expense.Note</td>
@@ -309,8 +320,10 @@ button.btn-primary:hover {
 </div>
 
 <!-- Add Expense Button -->
-<button class="btn btn-primary" @onclick="OpenAddExpensePopup">Add Debt</button>
-
+<div style="display:inline-flex">
+    <button class="btn btn-primary" style="margin-left:120px" @onclick="OpenAddExpensePopup">Add Debt</button>
+    <button class="btn btn-danger" style="margin-left:50px" @onclick="OpenClearDebtPopup">Clear Debt</button>
+</div>
 <!-- Add Expense Popup -->
 @if (IsAddExpensePopupVisible)
 {

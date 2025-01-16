@@ -276,11 +276,19 @@ button.btn-primary:hover {
     }
 }
 
+    .action-buttons{
+        margin:4%;
+    }
+
 </style>
 <h3>Expense Tracker</h3>
 
 <div class="total-expenses">
     <p>Total Expenses: @currencyType <strong>@TotalExpenses.ToString()</strong></p>
+</div>
+<div class="action-buttons">
+    <button class="btn btn-secondary" @onclick="HighestSort">Highest</button>
+    <button class="btn btn-secondary" @onclick="LowestSort">Lowest</button>
 </div>
 <div class="expenses-list">
     <table class="table">
@@ -320,13 +328,14 @@ button.btn-primary:hover {
         <div class="popup-overlay">
             <div class="popup">
                 <h4>Add Expense</h4>
+            <label><strong>Total Remaining Amount: </strong></label><strong>@TotalRemainingAmount</strong>
                 <form>
                     <div style="display:none;">
                         <label>Transaction ID:</label>
                         <input type="number" @bind-value="NewExpense.TransactionId" />
                     </div>
                         <div>
-            <label>Category:</label>
+            <label>Label:</label>
             <select @bind="NewExpense.CategoryId" class="form-control">
                 <option value="">Select a Category</option>
                         @foreach (var category in Categories)

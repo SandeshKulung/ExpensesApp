@@ -93,13 +93,31 @@
     <label for="end-date">To:</label>
     <input id="end-date" type="date" @bind="EndDate" class="input-date" />
 
+    <label for="typefilter">Type:</label>
+    <select id="typefilter" @bind="type" class="form-select form-group">
+        <option value="all" selected>-- Select Type --</option>
+        <option value="debt">Debt</option>
+        <option value="cleardebt">Clear Debt</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+    </select>
+    
+    <label for="typefilter">Type:</label>
+    <select id="typefilter" @bind="label" class="form-select">
+        <option value="all" selected>-- Select Label --</option>
+        @foreach (var item in Categories)
+        {
+            <option value="@item.Title">@item.Title</option>
+        }
+    </select>
+
     <button class="btn btn-primary filter-btn" @onclick="ApplyFilter">Apply Filter</button>
 </div>
 
 
 <div class="action-buttons">
-    <button class="btn btn-secondary" @onclick="ExportPdf">Export PDF</button>
-    <button class="btn btn-secondary" @onclick="ExportCsv">Export CSV</button>
+    <button class="btn btn-secondary" @onclick="ExportPdf">Asc sort</button>
+    <button class="btn btn-secondary" @onclick="ExportCsv">Desc sort</button>
     <button class="btn btn-secondary" @onclick="ClearFilter">Clear Filter</button>
 </div>
 

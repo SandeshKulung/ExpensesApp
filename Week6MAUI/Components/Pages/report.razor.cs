@@ -6,8 +6,11 @@ namespace Week6MAUI.Components.Pages
     public partial class Report
     {
         private DateTime StartDate { get; set; } = DateTime.Today.AddDays(-30);
-        private DateTime EndDate { get; set; } = DateTime.Today.AddDays(1);
+        private DateTime EndDate { get; set; } = DateTime.Today;
+        private string type { get; set; } = "all";
+        private string label { get; set; } = "all";
         private decimal TotalExpense { get; set; }
+        private List<Category> Categories = new();
         private List<Transaction> Expenses { get; set; } = new List<Transaction>();
         private List<TransactionDto> FilteredExpenses { get; set; } = new List<TransactionDto>();
         decimal totalIncomeAmount = 0;
@@ -18,14 +21,14 @@ namespace Week6MAUI.Components.Pages
         protected override async Task OnInitializedAsync()
         {
             Expenses = await transactionService.GetAll();
-
+            Categories = await categoryService.GetAll();
             ApplyFilter();
         }
 
         private void ApplyFilter()
         {
             List<TransactionDto> transactionDtos = Expenses
-     .Where(e => e.Date >= StartDate && e.Date <= EndDate)
+     .Where(e => e.Date >= StartDate && e.Date <= EndDate.AddDays(1))
      .Select(e => new TransactionDto
      {
          TransactionId = e.TransactionId,
@@ -39,6 +42,13 @@ namespace Week6MAUI.Components.Pages
          ExpensesAmount = e.Type == "expense" ? e.Amount : 0
      })
      .ToList();
+            if (type != "all") { 
+                transactionDtos = transactionDtos.Where(x => x.Type == type).ToList();
+            }
+            if (label!="all")
+            {
+                transactionDtos = transactionDtos.Where(x => x.CategoryId == label).ToList();
+            }
             FilteredExpenses = transactionDtos.ToList();
             totalIncomeAmount = transactionDtos.Sum(dto => dto.IncomeAmount);
             totalDebtAmount = transactionDtos.Sum(dto => dto.DebtAmount);
@@ -49,18 +59,18 @@ namespace Week6MAUI.Components.Pages
         private void ClearFilter()
         {
             StartDate = DateTime.Today.AddDays(-30);
-            EndDate = DateTime.Today.AddDays(1);
+            EndDate = DateTime.Today;
             ApplyFilter();
         }
 
         private void ExportPdf()
         {
-            // Logic to export report as PDF
+            FilteredExpenses = FilteredExpenses.OrderBy(x => x.Date).ToList();
         }
 
         private void ExportCsv()
         {
-            // Logic to export report as CSV
+            FilteredExpenses = FilteredExpenses.OrderByDescending(x => x.Date).ToList();
         }
 
         private void ViewSummaryChart()

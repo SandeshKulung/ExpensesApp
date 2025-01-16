@@ -277,11 +277,18 @@ button.btn-primary:hover {
     }
 }
 
+    .action-buttons {
+        margin: 4%;
+    }
 </style>
 <h3>Income Tracker</h3>
 
 <div class="total-expenses">
     <p>Total Income: @currencyType <strong>@TotalExpenses.ToString()</strong></p>
+</div>
+<div class="action-buttons">
+    <button class="btn btn-secondary" @onclick="HighestSort">Highest</button>
+    <button class="btn btn-secondary" @onclick="LowestSort">Lowest</button>
 </div>
 <div class="expenses-list">
     <table class="table">

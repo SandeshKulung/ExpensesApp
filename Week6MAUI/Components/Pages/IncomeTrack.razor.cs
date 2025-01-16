@@ -27,6 +27,14 @@ namespace Week6MAUI.Components.Pages
             };
             IsAddExpensePopupVisible = true;
         }
+        private void HighestSort()
+        {
+            Expenses = Expenses.OrderByDescending(x => x.Amount).ToList();
+        }
+        private void LowestSort()
+        {
+            Expenses = Expenses.OrderBy(x => x.Amount).ToList();
+        }
 
         private void CloseAddExpensePopup()
         {
