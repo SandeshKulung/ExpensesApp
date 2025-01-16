@@ -81,9 +81,16 @@ namespace Week6MAUI.Components.Pages
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            try
             {
-                await JSRuntime.InvokeVoidAsync("drawExpenseChart", ChartLabels, ChartData);
+                if (firstRender)
+                {
+                    await JSRuntime.InvokeVoidAsync("drawExpenseChart", ChartLabels, ChartData);
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
