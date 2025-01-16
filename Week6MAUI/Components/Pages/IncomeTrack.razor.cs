@@ -11,6 +11,7 @@ namespace Week6MAUI.Components.Pages
         private Transaction NewExpense = new();
         public decimal TotalExpenses => Expenses.Sum(e => e.Amount);
         private bool IsAddExpensePopupVisible = false;
+        string currencyType = Preferences.Get("Currency_Type", "Rs");
         protected override async Task OnInitializedAsync()
         {
             Expenses = await transactionService.GetAll();

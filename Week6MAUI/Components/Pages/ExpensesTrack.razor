@@ -280,7 +280,7 @@ button.btn-primary:hover {
 <h3>Expense Tracker</h3>
 
 <div class="total-expenses">
-    <p>Total Expenses: <strong>@TotalExpenses.ToString()</strong></p>
+    <p>Total Expenses: @currencyType <strong>@TotalExpenses.ToString()</strong></p>
 </div>
 <div class="expenses-list">
     <table class="table">
@@ -302,7 +302,7 @@ button.btn-primary:hover {
                     <tr>
                                 <td>@(index + 1)</td>
                         <td>@expense.CategoryId</td>
-                        <td>@expense.Amount.ToString()</td>
+                            <td>@currencyType @expense.Amount.ToString()</td>
                         <td>@expense.Date.ToShortDateString()</td>
                         <td>@expense.Note</td>
                     </tr>

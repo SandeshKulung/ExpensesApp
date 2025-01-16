@@ -1,7 +1,7 @@
 using DataAccess.Services;
 using DataAccess.Services.Interface;
 using DataModel.Model;
-
+using Microsoft.Maui.Storage;
 namespace Week6MAUI.Components.Pages
 {
     public partial class Login
@@ -12,6 +12,8 @@ namespace Week6MAUI.Components.Pages
         {
             if (UserService.Login(Users))
             {
+                Preferences.Set("Currency_Type", Users.Currency_Type);
+                Preferences.Set("username", Users.Username);
                 Nav.NavigateTo("/dashboard");
             }
             else

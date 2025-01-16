@@ -3,55 +3,6 @@
 <h3 class="report-header">Expense Report</h3>
 
 
-<div class="date-filter">
-    <label for="start-date">From:</label>
-    <input id="start-date" type="date" @bind="StartDate" class="input-date" />
-
-    <label for="end-date">To:</label>
-    <input id="end-date" type="date" @bind="EndDate" class="input-date" />
-
-    <button class="btn btn-primary filter-btn" @onclick="ApplyFilter">Apply Filter</button>
-</div>
-
-
-<div class="action-buttons">
-    <button class="btn btn-secondary" @onclick="ExportPdf">Export PDF</button>
-    <button class="btn btn-secondary" @onclick="ExportCsv">Export CSV</button>
-    <button class="btn btn-secondary" @onclick="ClearFilter">Clear Filter</button>
-</div>
-
-
-<div class="total-expense">
-    <h4>Total Expense: <span class="expense-amount">@TotalExpense.ToString("C")</span></h4>
-</div>
-
-
-<h4 class="expense-breakdown-header">Expense Breakdown</h4>
-<table class="table expense-table">
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var expense in FilteredExpenses)
-        {
-            <tr>
-                <td>@expense.Category</td>
-                <td>@expense.Amount.ToString("C")</td>
-                <td>@expense.Date.ToShortDateString()</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-<div class="summary-chart">
-    <button class="btn btn-info" @onclick="ViewSummaryChart">View Summary Chart</button>
-</div>
-
 <style>
     .report-header {
         color: #2e7d32;
@@ -105,16 +56,16 @@
         background-color: #f1f8e9;
     }
 
-    .expense-table th, .expense-table td {
-        border: 1px solid #c8e6c9;
-        padding: 8px;
-        text-align: left;
-    }
+        .expense-table th, .expense-table td {
+            border: 1px solid #c8e6c9;
+            padding: 8px;
+            text-align: left;
+        }
 
-    .expense-table th {
-        background-color: #a5d6a7;
-        color: #2e7d32;
-    }
+        .expense-table th {
+            background-color: #a5d6a7;
+            color: #2e7d32;
+        }
 
     .btn {
         padding: 10px 15px;
@@ -134,62 +85,65 @@
     }
 </style>
 
-@code {
-    private DateTime StartDate { get; set; } = DateTime.Today.AddDays(-30);
-    private DateTime EndDate { get; set; } = DateTime.Today;
-    private decimal TotalExpense { get; set; }
-    private List<Expense> Expenses { get; set; } = new List<Expense>();
-    private List<Expense> FilteredExpenses { get; set; } = new List<Expense>();
+<h3 class="report-header">Report</h3>
+<div class="date-filter">
+    <label for="start-date">From:</label>
+    <input id="start-date" type="date" @bind="StartDate" class="input-date" />
 
-    protected override void OnInitialized()
-    {
-       
-        Expenses = new List<Expense>
+    <label for="end-date">To:</label>
+    <input id="end-date" type="date" @bind="EndDate" class="input-date" />
+
+    <button class="btn btn-primary filter-btn" @onclick="ApplyFilter">Apply Filter</button>
+</div>
+
+
+<div class="action-buttons">
+    <button class="btn btn-secondary" @onclick="ExportPdf">Export PDF</button>
+    <button class="btn btn-secondary" @onclick="ExportCsv">Export CSV</button>
+    <button class="btn btn-secondary" @onclick="ClearFilter">Clear Filter</button>
+</div>
+
+
+<div class="total-expense">
+    <h4>Total Expense: <span class="expense-amount">@currencyType @TotalExpense.ToString()</span></h4>
+</div>
+
+<!-- Expense List -->
+<h4 class="expense-breakdown-header">Transaction Breakdown</h4>
+<table class="table expense-table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Income Amount</th>
+            <th>Debt Amount</th>
+            <th>Expenses Amount</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in FilteredExpenses)
         {
-            new Expense { Category = "Food", Amount = 120.50m, Date = DateTime.Today.AddDays(-1) },
-            new Expense { Category = "Transport", Amount = 45.00m, Date = DateTime.Today.AddDays(-2) },
-            new Expense { Category = "Utilities", Amount = 60.00m, Date = DateTime.Today.AddDays(-3) }
-        };
+            <tr>
+                <td>@expense.Type</td>
+                <td>@expense.CategoryId</td>
+                <td>@expense.IncomeAmount.ToString()</td>
+                <td>@expense.DebtAmount.ToString()</td>
+                <td>@expense.ExpensesAmount.ToString()</td>
+                <td>@expense.Date.ToShortDateString()</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="2"><strong>Total</strong></td>
+            <td><strong>@totalIncomeAmount</strong></td>
+            <td><strong>@totalDebtAmount</strong></td>
+            <td><strong>@totalExpensesAmount</strong></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
-        ApplyFilter();
-    }
-
-    private void ApplyFilter()
-    {
-        FilteredExpenses = Expenses
-            .Where(e => e.Date >= StartDate && e.Date <= EndDate)
-            .ToList();
-
-        TotalExpense = FilteredExpenses.Sum(e => e.Amount);
-    }
-
-    private void ClearFilter()
-    {
-        StartDate = DateTime.Today.AddDays(-30);
-        EndDate = DateTime.Today;
-        ApplyFilter();
-    }
-
-    private void ExportPdf()
-    {
-        
-    }
-
-    private void ExportCsv()
-    {
-        
-    }
-
-    private void ViewSummaryChart()
-    {
-        
-    }
-
-    public class Expense
-    {
-        public string Category { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime Date { get; set; }
-    }
-}
-
+@* <div class="summary-chart">
+    <button class="btn btn-info" @onclick="ViewSummaryChart">View Summary Chart</button>
+</div>
+ *@
