@@ -27,7 +27,17 @@ namespace Week6MAUI
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                var exception = e.ExceptionObject as Exception;
+                // Log exception details
+            };
 
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                // Log unobserved task exceptions
+                e.SetObserved();
+            };
             return builder.Build();
         }
     }

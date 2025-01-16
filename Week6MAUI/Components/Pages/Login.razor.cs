@@ -63,30 +63,30 @@ namespace Week6MAUI.Components.Pages
             }
 
         }
-        private async Task AddUserRecord()
-        {
-            User user = new User()
-            {
-                Username="pritesh",
-                Password="pritesh",
-                Currency_Type="Rs"
-            };
+        //private async Task AddUserRecord()
+        //{
+        //    User user = new User()
+        //    {
+        //        Username="pritesh",
+        //        Password="pritesh",
+        //        Currency_Type="Rs"
+        //    };
 
-            var response = await useraccess.AddUser(user);
+        //    var response = await useraccess.AddUser(user);
 
 
-            if (response > 0)
-            {
-                this.StateHasChanged();
-                await App.Current.MainPage.DisplayAlert("Record Saved",
-                "Record Saved To Student Table", "OK");
-            }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert("Oops",
-               "Something went wrong while adding record", "OK");
-            }
-            var  getUser=await useraccess.GetAllUser();
-        }
+        //    if (response > 0)
+        //    {
+        //        this.StateHasChanged();
+        //        await App.Current.MainPage.DisplayAlert("Record Saved",
+        //        "Record Saved To Student Table", "OK");
+        //    }
+        //    else
+        //    {
+        //        await App.Current.MainPage.DisplayAlert("Oops",
+        //       "Something went wrong while adding record", "OK");
+        //    }
+        //    var  getUser=await useraccess.GetAllUser();
+        //}
     }
 }
