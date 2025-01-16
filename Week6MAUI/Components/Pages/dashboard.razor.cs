@@ -3,7 +3,7 @@ using DataModel.Model;
 
 namespace Week6MAUI.Components.Pages
 {
-    public partial class dashboard
+    public partial class Dashboard
     {
     }
 }

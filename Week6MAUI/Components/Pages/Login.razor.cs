@@ -12,7 +12,7 @@ namespace Week6MAUI.Components.Pages
         {
             if (UserService.Login(Users))
             {
-                Nav.NavigateTo("/home");
+                Nav.NavigateTo("/dashboard");
             }
             else
             {
