@@ -1,5 +1,5 @@
 ﻿@page "/Dashboard" 
-
+@inject IJSRuntime JSRuntime
 <div class="dashboard">
     <div class="date-filter">
         <label for="start-date">From:</label>
@@ -185,19 +185,43 @@
 
 <script>
     // Example for rendering a chart (using Chart.js or similar library)
-    document.addEventListener("DOMContentLoaded", function () {
+        function drawExpenseChart(labels, data) {
         const ctx = document.getElementById("expenseChart").getContext("2d");
+
         new Chart(ctx, {
-            type: "doughnut",
+            type: "bar", // You can change to 'doughnut', 'pie', etc.
             data: {
-                labels: ["Food", "Transport", "Utilities"],
+                labels: labels,
                 datasets: [
                     {
-                        data: [120.5, 45.0, 60.0],
-                        backgroundColor: ["#4caf50", "#81c784", "#a5d6a7"]
-                    }
-                ]
-            }
+                        label: "Total Expenses",
+                        data: data,
+                        backgroundColor: [
+                            "#4caf50", // Green
+                            "#2196f3", // Blue
+                            "#ff9800", // Orange
+                            "#e91e63", // Pink
+                            "#9c27b0", // Purple
+                        ],
+                        borderColor: "#ffffff",
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                    },
+                    title: {
+                        display: true,
+                        text: "Expense Distribution by Category",
+                    },
+                },
+            },
         });
-    });
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>

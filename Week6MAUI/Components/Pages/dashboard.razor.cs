@@ -1,6 +1,7 @@
 using DataAccess.Services;
 using DataModel.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.JSInterop;
 
 namespace Week6MAUI.Components.Pages
 {
@@ -16,6 +17,8 @@ namespace Week6MAUI.Components.Pages
         string currencyType = Preferences.Get("Currency_Type", "Rs");
         private List<Transaction> Expenses { get; set; } = new List<Transaction>();
         private List<TransactionDto> FilteredExpenses { get; set; } = new List<TransactionDto>();
+        private string[] ChartLabels = Array.Empty<string>();
+        private int[] ChartData = Array.Empty<int>();
         protected override async Task OnInitializedAsync()
         {
             Expenses = await transactionService.GetAll();
@@ -52,6 +55,13 @@ namespace Week6MAUI.Components.Pages
             var totaldebt = Expenses.Where(x => x.Type == "debt").Sum(e => e.Amount);
             var ClearedDebt = Expenses.Where(x => x.Type == "cleardebt").Sum(e => e.Amount);
             RemainingDebt = totaldebt - ClearedDebt;
+
+            var groupedData = Expenses.Where(x=>x.Type=="expense")
+            .GroupBy(t => t.CategoryId)
+            .Select(g => new { Category = g.Key, TotalAmount = g.Sum(t => t.Amount) })
+            .ToList();
+            ChartLabels = groupedData.Select(g => g.Category).ToArray();
+            ChartData = groupedData.Select(g => g.TotalAmount).ToArray();
         }
         private void NavigateToIncomeTrack()
         {
@@ -68,6 +78,13 @@ namespace Week6MAUI.Components.Pages
         private void NavigateToReportTrack()
         {
             Nav.NavigateTo("/Report");
+        }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await JSRuntime.InvokeVoidAsync("drawExpenseChart", ChartLabels, ChartData);
+            }
         }
     }
 }
