@@ -19,6 +19,7 @@ namespace Week6MAUI.Components.Pages
                 ErrorMessage = "Invalid username or password.";
             }
             //AddUserRecord();
+            await AddDefaultCategory();
         }
         private async Task AddDefaultCategory()
         {
@@ -53,40 +54,40 @@ namespace Week6MAUI.Components.Pages
                 });
                 categoryList.Add(new Category
                 {
-                    Title = "Business",
+                    Title = "Budget",
                     Type = "income"
                 });
                 foreach (var category in categoryList)
                 {
-
+                    await categoryService.Add(category);
                 }
             }
 
         }
-        //private async Task AddUserRecord()
-        //{
-        //    User user = new User()
-        //    {
-        //        Username="pritesh",
-        //        Password="pritesh",
-        //        Currency_Type="Rs"
-        //    };
+        private async Task AddUserRecord()
+        {
+            User user = new User()
+            {
+                Username = "pritesh",
+                Password = "pritesh",
+                Currency_Type = "Rs"
+            };
 
-        //    var response = await useraccess.AddUser(user);
+            var response = await useraccess.AddUser(user);
 
 
-        //    if (response > 0)
-        //    {
-        //        this.StateHasChanged();
-        //        await App.Current.MainPage.DisplayAlert("Record Saved",
-        //        "Record Saved To Student Table", "OK");
-        //    }
-        //    else
-        //    {
-        //        await App.Current.MainPage.DisplayAlert("Oops",
-        //       "Something went wrong while adding record", "OK");
-        //    }
-        //    var  getUser=await useraccess.GetAllUser();
-        //}
+            if (response > 0)
+            {
+                this.StateHasChanged();
+                await App.Current.MainPage.DisplayAlert("Record Saved",
+                "Record Saved To Student Table", "OK");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Oops",
+               "Something went wrong while adding record", "OK");
+            }
+            var getUser = await useraccess.GetAllUser();
+        }
     }
 }

@@ -1,7 +1,364 @@
 ﻿@page "/incometrack"
-<ul>
-    @* @foreach (var expense in Users)
-    {
-        <li>@expense.Username</li>
-    } *@
-</ul>
+
+@using System.Globalization
+<style>
+   /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Total Expenses Styling */
+.total-expenses {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Expenses List Table */
+.expenses-list {
+    max-width: 90%;
+    margin: 0 auto 20px;
+    overflow-x: auto;
+}
+
+.expenses-list h4 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Add Expense Button */
+button.btn-primary {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background-color: #45a049;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup */
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 90%;
+}
+
+.popup h4 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.popup form div {
+    margin-bottom: 15px;
+}
+
+.popup form div label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.popup form div input, 
+.popup form div textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.popup form .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.popup form .actions button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup form .actions .btn-success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.popup form .actions .btn-success:hover {
+    background-color: #45a049;
+}
+
+.popup form .actions .btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.popup form .actions .btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup */
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 90%; /* Ensures popup doesn't overflow on small screens */
+    margin: 10px; /* Adds margin for extra breathing room on very small screens */
+    box-sizing: border-box; /* Ensures padding doesn't affect width calculations */
+}
+
+/* Popup Header */
+.popup h4 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Form Fields */
+.popup form div {
+    margin-bottom: 15px;
+}
+
+.popup form div label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.popup form div input,
+.popup form div textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* Ensures inputs are responsive */
+}
+
+/* Actions Section */
+.popup form .actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Adds space between buttons */
+    flex-wrap: wrap; /* Ensures buttons stack on small screens */
+}
+
+.popup form .actions button {
+    flex: 1; /* Buttons grow equally in available space */
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup form .actions .btn-success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.popup form .actions .btn-success:hover {
+    background-color: #45a049;
+}
+
+.popup form .actions .btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.popup form .actions .btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Media Queries for Responsiveness */
+    @@media (max-width: 600px) {
+    .popup {
+        width: 100%; /* Occupies full width on small screens */
+        padding: 15px; /* Reduces padding for smaller viewports */
+        border-radius: 0; /* Removes rounded corners for a cleaner look */
+    }
+
+    .popup form .actions button {
+        flex: 1 1 100%; /* Buttons take full width on small screens */
+        margin-bottom: 10px; /* Adds space between buttons */
+    }
+}
+
+</style>
+<h3>Income Tracker</h3>
+
+<div class="total-expenses">
+    <p>Total Income: <strong>@TotalExpenses.ToString()</strong></p>
+</div>
+<div class="expenses-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int sn = 1; 
+            }
+            @foreach (var(expense, index) in Expenses.Select((expense, index) => (expense, index)))
+            {
+                        <tr>
+                                    <td>@(index + 1)</td>
+                            <td>@expense.CategoryId</td>
+                            <td>@expense.Amount.ToString()</td>
+                            <td>@expense.Date.ToShortDateString()</td>
+                            <td>@expense.Note</td>
+                        </tr>
+                        
+            
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Expense Button -->
+<button class="btn btn-primary" @onclick="OpenAddExpensePopup">Add Income</button>
+
+<!-- Add Expense Popup -->
+@if (IsAddExpensePopupVisible)
+{
+            <div class="popup-overlay">
+                <div class="popup">
+                    <h4>Add Income</h4>
+                    <form>
+                        <div style="display:none;">
+                            <label>Transaction ID:</label>
+                            <input type="number" @bind-value="NewExpense.TransactionId" />
+                        </div>
+                            <div>
+                <label>Category:</label>
+                <select @bind="NewExpense.CategoryId" class="form-control">
+                    <option value="">Select a Category</option>
+                        @foreach (var category in Categories)
+                        {
+                                                    <option value="@category.Title">@category.Title</option>
+                        }
+                </select>
+            </div>
+                        <div>
+                            <label>Amount:</label>
+                            <input type="number" @bind-value="NewExpense.Amount" />
+                        </div>
+                        <div>
+                            <label>Date:</label>
+                            <input type="date" @bind-value="NewExpense.Date" />
+                        </div>
+                            <div style="display:none;">
+                                <label>Type:</label>
+                                <input type="text" @bind-value="NewExpense.Type" />
+                        </div>
+                        <div>
+                            <label>Note:</label>
+                            <textarea @bind="NewExpense.Note"></textarea>
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="btn btn-success" @onclick="SaveExpense">Save</button>
+                            <button type="button" class="btn btn-danger" @onclick="CloseAddExpensePopup">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+}
