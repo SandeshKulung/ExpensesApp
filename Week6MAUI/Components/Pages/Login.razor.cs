@@ -20,7 +20,50 @@ namespace Week6MAUI.Components.Pages
             }
             //AddUserRecord();
         }
-        private async void AddUserRecord()
+        private async Task AddDefaultCategory()
+        {
+            var response = await categoryService.GetAll();
+            if (!response.Any()) 
+            { 
+                List<Category> categoryList= new List<Category>();
+                categoryList.Add(new Category
+                {
+                    Title = "Rent",
+                    Type="expense"
+                });
+                categoryList.Add(new Category
+                {
+                    Title = "Grocery",
+                    Type = "expense"
+                });
+                categoryList.Add(new Category
+                {
+                    Title = "Food",
+                    Type = "expense"
+                });
+                categoryList.Add(new Category
+                {
+                    Title = "Salary",
+                    Type="income"
+                });
+                categoryList.Add(new Category
+                {
+                    Title = "Bonus",
+                    Type = "income"
+                });
+                categoryList.Add(new Category
+                {
+                    Title = "Business",
+                    Type = "income"
+                });
+                foreach (var category in categoryList)
+                {
+
+                }
+            }
+
+        }
+        private async Task AddUserRecord()
         {
             User user = new User()
             {
