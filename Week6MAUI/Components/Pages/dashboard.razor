@@ -1,7 +1,181 @@
-﻿@page "/dashboard"
-<ul>
-    @* @foreach (var expense in Users)
-    {
-        <li>@expense.Username</li>
-    } *@
-</ul>
+﻿@page "/dashboard" 
+
+<div class="dashboard">
+    <h3 class="dashboard-header">Dashboard</h3>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+        <div class="card">
+            <h4>Total Income</h4>
+            <p class="value">$5000</p>
+        </div>
+        <div class="card">
+            <h4>Total Expenses</h4>
+            <p class="value">$2500</p>
+        </div>
+        <div class="card">
+            <h4>Remaining Balance</h4>
+            <p class="value">$2500</p>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <h4 class="section-header">Recent Transactions</h4>
+    <table class="transactions-table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Food</td>
+                <td>$120.50</td>
+                <td>2023-01-15</td>
+            </tr>
+            <tr>
+                <td>Transport</td>
+                <td>$45.00</td>
+                <td>2023-01-14</td>
+            </tr>
+            <tr>
+                <td>Utilities</td>
+                <td>$60.00</td>
+                <td>2023-01-13</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Expense Distribution Chart -->
+    <div class="chart-section">
+        <h4 class="section-header">Expense Distribution</h4>
+        <canvas id="expenseChart"></canvas>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="dashboard-actions">
+        <button class="btn btn-primary">Add Income</button>
+        <button class="btn btn-secondary">Add Expense</button>
+        <button class="btn btn-info">View Detailed Report</button>
+    </div>
+</div>
+
+<style>
+    .dashboard {
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #e8f5e9;
+    }
+
+    .dashboard-header {
+        color: #2e7d32;
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .summary-cards {
+        display: flex;
+        gap: 15px;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background-color: #a5d6a7;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        color: white;
+        flex: 1;
+    }
+
+    .card h4 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .card .value {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .section-header {
+        color: #388e3c;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+    }
+
+    .transactions-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+    .transactions-table th, .transactions-table td {
+        border: 1px solid #c8e6c9;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .transactions-table th {
+        background-color: #a5d6a7;
+        color: white;
+    }
+
+    .chart-section {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .dashboard-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #81c784;
+        color: white;
+    }
+
+    .btn-info {
+        background-color: #64b5f6;
+        color: white;
+    }
+</style>
+
+<script>
+    // Example for rendering a chart (using Chart.js or similar library)
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("expenseChart").getContext("2d");
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["Food", "Transport", "Utilities"],
+                datasets: [
+                    {
+                        data: [120.5, 45.0, 60.0],
+                        backgroundColor: ["#4caf50", "#81c784", "#a5d6a7"]
+                    }
+                ]
+            }
+        });
+    });
+</script>
