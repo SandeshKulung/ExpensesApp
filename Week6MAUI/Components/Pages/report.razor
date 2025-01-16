@@ -1,7 +1,195 @@
-﻿@page "/report"
-<ul>
-    @* @foreach (var expense in Users)
+﻿@page "/report" 
+
+<h3 class="report-header">Expense Report</h3>
+
+<!-- Date Range Filter -->
+<div class="date-filter">
+    <label for="start-date">From:</label>
+    <input id="start-date" type="date" @bind="StartDate" class="input-date" />
+
+    <label for="end-date">To:</label>
+    <input id="end-date" type="date" @bind="EndDate" class="input-date" />
+
+    <button class="btn btn-primary filter-btn" @onclick="ApplyFilter">Apply Filter</button>
+</div>
+
+<!-- Action Buttons -->
+<div class="action-buttons">
+    <button class="btn btn-secondary" @onclick="ExportPdf">Export PDF</button>
+    <button class="btn btn-secondary" @onclick="ExportCsv">Export CSV</button>
+    <button class="btn btn-secondary" @onclick="ClearFilter">Clear Filter</button>
+</div>
+
+<!-- Total Expense -->
+<div class="total-expense">
+    <h4>Total Expense: <span class="expense-amount">@TotalExpense.ToString("C")</span></h4>
+</div>
+
+<!-- Expense List -->
+<h4 class="expense-breakdown-header">Expense Breakdown</h4>
+<table class="table expense-table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in FilteredExpenses)
+        {
+            <tr>
+                <td>@expense.Category</td>
+                <td>@expense.Amount.ToString("C")</td>
+                <td>@expense.Date.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Summary Chart Button -->
+<div class="summary-chart">
+    <button class="btn btn-info" @onclick="ViewSummaryChart">View Summary Chart</button>
+</div>
+
+<style>
+    .report-header {
+        color: #2e7d32;
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .date-filter, .action-buttons, .summary-chart {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .input-date {
+        border: 1px solid #4caf50;
+        border-radius: 4px;
+        padding: 5px;
+    }
+
+    .filter-btn {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .total-expense {
+        text-align: center;
+        background-color: #e8f5e9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .expense-amount {
+        color: #2e7d32;
+        font-weight: bold;
+    }
+
+    .expense-breakdown-header {
+        color: #388e3c;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .expense-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+        background-color: #f1f8e9;
+    }
+
+    .expense-table th, .expense-table td {
+        border: 1px solid #c8e6c9;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .expense-table th {
+        background-color: #a5d6a7;
+        color: #2e7d32;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background-color: #81c784;
+        color: white;
+    }
+
+    .btn-info {
+        background-color: #64b5f6;
+        color: white;
+    }
+</style>
+
+@code {
+    private DateTime StartDate { get; set; } = DateTime.Today.AddDays(-30);
+    private DateTime EndDate { get; set; } = DateTime.Today;
+    private decimal TotalExpense { get; set; }
+    private List<Expense> Expenses { get; set; } = new List<Expense>();
+    private List<Expense> FilteredExpenses { get; set; } = new List<Expense>();
+
+    protected override void OnInitialized()
     {
-        <li>@expense.Username</li>
-    } *@
-</ul>
+        // Simulate data loading
+        Expenses = new List<Expense>
+        {
+            new Expense { Category = "Food", Amount = 120.50m, Date = DateTime.Today.AddDays(-1) },
+            new Expense { Category = "Transport", Amount = 45.00m, Date = DateTime.Today.AddDays(-2) },
+            new Expense { Category = "Utilities", Amount = 60.00m, Date = DateTime.Today.AddDays(-3) }
+        };
+
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        FilteredExpenses = Expenses
+            .Where(e => e.Date >= StartDate && e.Date <= EndDate)
+            .ToList();
+
+        TotalExpense = FilteredExpenses.Sum(e => e.Amount);
+    }
+
+    private void ClearFilter()
+    {
+        StartDate = DateTime.Today.AddDays(-30);
+        EndDate = DateTime.Today;
+        ApplyFilter();
+    }
+
+    private void ExportPdf()
+    {
+        // Logic to export report as PDF
+    }
+
+    private void ExportCsv()
+    {
+        // Logic to export report as CSV
+    }
+
+    private void ViewSummaryChart()
+    {
+        // Navigate to or display summary chart
+    }
+
+    public class Expense
+    {
+        public string Category { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
+    }
+}
+
