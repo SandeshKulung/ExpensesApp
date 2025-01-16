@@ -18,7 +18,11 @@ namespace Week6MAUI
 
             builder.Services.AddMauiBlazorWebView();
 
+            //builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserAccess, UserAccess>();
+            builder.Services.AddScoped<ICategory, CategoryService>();
+            builder.Services.AddScoped<ITransaction, TransactionService>();
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();

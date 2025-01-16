@@ -1,4 +1,5 @@
-﻿using DataAccess.Services.Interface;
+﻿
+using DataAccess.Services.Interface;
 using DataModel.Abstraction;
 using DataModel.Model;
 
@@ -16,19 +17,19 @@ namespace DataAccess.Services
         {
             _users = LoadUsers();
 
-            if (_users.Any())
+            if (!_users.Any())
             {
-                _users.Add(new User { Username = SeedUsername, Password = SeedPassword});
+                _users.Add(new User { UserId=1, Username = SeedUsername, Password = SeedPassword});
                 SaveUsers(_users);
             }
         }
         public bool Login(User user)
         {
-            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
+            if (_users.Any(x=>x.Username==user.Username && x.Password==user.Password))
             {
-                return false;
+                return true;
             }
-            return _users.Any(u => u.Username == user.Username && u.Password == user.Password);
+            return false;
         }
     }
 }

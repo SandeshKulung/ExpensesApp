@@ -8,7 +8,11 @@
 @using Week6MAUI
 @using Week6MAUI.Components
 @using DataAccess.Services.Interface
-
+empty
+@using DataAccess.Services
+@inject IUserAccess useraccess
+@inject ICategory categoryService
+@inject ITransaction transactionService
 @inject NavigationManager Nav
 
 @inject IUserService UserService

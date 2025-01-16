@@ -1,16 +1,71 @@
 ﻿@page "/login"
+@layout Components.Layout._EmptyLayout
+<style>
+.form-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fbfbfb 0%, #c3c4d1 100%);
+    color: #fff;
+    padding: 20px;
+}
 
+.form-login form {
+    background: #fff;
+    color: #333;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-login .form-floating input {
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 16px;
+}
+
+.form-login .form-floating label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.form-login .btn-primary {
+    background: #6b73ff;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.form-login .btn-primary:hover {
+    background: #000dff;
+}
+
+@@media (max-width: 576px) {
+    .form-login form {
+        padding: 20px;
+    }
+
+    .form-login img {
+        width: 60px;
+        height: auto;
+    }
+
+    .form-login h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
 <div class="form-login">
-    <form class="text-center" @onsubmit="HandleLogin">
-        <img class="mb-4" src="/appicon.png" alt="" height="72">
-        <h1 class="h3 mb-3 fw-normal">Please Login</h1>
+    <form class="text-center shadow-lg p-4 rounded" @onsubmit="HandleLogin">
+        
+        <h1 class="h3 mb-3 fw-normal text-primary">Welcome Back</h1>
 
         <div class="form-floating mb-3">
             <input type="text" class="form-control" @bind="Users.Username" placeholder="Username" />
             <label for="floatingInput">Username</label>
         </div>
 
-        <!-- Password Input -->
         <div class="form-floating mb-3">
             <input type="password" class="form-control" @bind="Users.Password" placeholder="Password" />
             <label for="floatingPassword">Password</label>
@@ -18,13 +73,10 @@
 
         @if (!string.IsNullOrEmpty(ErrorMessage))
         {
-            <div class="alert alert-danger">@ErrorMessage</div>
+                <div class="alert alert-danger">@ErrorMessage</div>
         }
-        <button class="btn btn-lg btn-primary">
+        <button class="btn btn-lg btn-primary w-100 mt-3">
             Login
         </button>
-       @*  <button class="btn btn-lg btn-secondary" @onclick="HandleRegister">
-            Register
-        </button> *@
     </form>
 </div>
