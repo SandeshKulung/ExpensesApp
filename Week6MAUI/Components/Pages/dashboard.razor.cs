@@ -88,7 +88,7 @@ namespace Week6MAUI.Components.Pages
                     await JSRuntime.InvokeVoidAsync("drawExpenseChart", ChartLabels, ChartData);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
