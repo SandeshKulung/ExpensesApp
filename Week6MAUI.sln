@@ -8,9 +8,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week6MAUI", "Week6MAUI\Week
 		{80B6B66B-8935-49B5-BBED-5B43F1B73986} = {80B6B66B-8935-49B5-BBED-5B43F1B73986}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{51DFED2B-5DF8-4D7B-98F0-72E51B904442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "DataModel\DataModel.csproj", "{51DFED2B-5DF8-4D7B-98F0-72E51B904442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{80B6B66B-8935-49B5-BBED-5B43F1B73986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{80B6B66B-8935-49B5-BBED-5B43F1B73986}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AE43ABE-E798-40FE-8E1E-E29EA591F144}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
