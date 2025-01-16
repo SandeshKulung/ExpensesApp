@@ -1,4 +1,4 @@
-﻿@page "/dashboard" 
+﻿@page "/Dashboard" 
 
 <div class="dashboard">
     <h3 class="dashboard-header">Dashboard</h3>
@@ -7,15 +7,19 @@
     <div class="summary-cards">
         <div class="card">
             <h4>Total Income</h4>
-            <p class="value">$5000</p>
+            <p class="value">@currencyType @totalIncomeAmount</p>
         </div>
         <div class="card">
-            <h4>Total Expenses</h4>
-            <p class="value">$2500</p>
+            <h4>Total Debt</h4>
+            <p class="value">@currencyType @totalDebtAmount</p>
+        </div>
+        <div class="card">
+            <h4>Total Expense</h4>
+            <p class="value">@currencyType @totalExpensesAmount</p>
         </div>
         <div class="card">
             <h4>Remaining Balance</h4>
-            <p class="value">$2500</p>
+            <p class="value">@currencyType @TotalRemainingAmount</p>
         </div>
     </div>
 
@@ -25,26 +29,23 @@
         <thead>
             <tr>
                 <th>Category</th>
-                <th>Amount</th>
+                <th>Income Amount</th>
+                <th>Debt Amount</th>
+                <th>Expenses Amount</th>
                 <th>Date</th>
             </tr>
         </thead>
         <tbody>
+            @foreach(var item in FilteredExpenses)
+            {
             <tr>
-                <td>Food</td>
-                <td>$120.50</td>
-                <td>2023-01-15</td>
+                <td>@item.CategoryId</td>
+                <td>@item.IncomeAmount</td>
+                <td>@item.DebtAmount</td>
+                <td>@item.ExpensesAmount</td>
+                <td>@item.Date.ToShortDateString()</td>
             </tr>
-            <tr>
-                <td>Transport</td>
-                <td>$45.00</td>
-                <td>2023-01-14</td>
-            </tr>
-            <tr>
-                <td>Utilities</td>
-                <td>$60.00</td>
-                <td>2023-01-13</td>
-            </tr>
+            }
         </tbody>
     </table>
 
@@ -56,9 +57,10 @@
 
     <!-- Action Buttons -->
     <div class="dashboard-actions">
-        <button class="btn btn-primary">Add Income</button>
-        <button class="btn btn-secondary">Add Expense</button>
-        <button class="btn btn-info">View Detailed Report</button>
+        <button class="btn btn-primary" @onclick="NavigateToIncomeTrack">Add Income</button>
+        <button class="btn btn-primary" @onclick="NavigateToDebtTrack">Add Debt</button>
+        <button class="btn btn-secondary" @onclick="NavigateToExpenseTrack">Add Expense</button>
+        <button class="btn btn-info" @onclick="NavigateToReportTrack">View Detailed Report</button>
     </div>
 </div>
 

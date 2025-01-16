@@ -15,17 +15,27 @@ namespace DataAccess.Services
 
         public UserService()
         {
-            _users = LoadUsers();
-
-            if (!_users.Any())
+            try
             {
-                _users.Add(new User { UserId=1, Username = SeedUsername, Password = SeedPassword});
-                SaveUsers(_users);
+
+                _users = LoadUsers();
+
+                if (!_users.Any())
+                {
+                    _users.Add(new User { UserId = 1, Username = SeedUsername, Password = SeedPassword });
+                    SaveUsers(_users);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         public bool Login(User user)
         {
-            if (_users.Any(x=>x.Username==user.Username && x.Password==user.Password))
+            if (_users.Any(x => x.Username == user.Username && x.Password == user.Password))
             {
                 return true;
             }

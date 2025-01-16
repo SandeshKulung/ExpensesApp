@@ -13,11 +13,20 @@ namespace DataAccess.Services
         }
         private async void SetUpDb()
         {
-            if (_dbConnection == null)
+            try
             {
-                string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "expense.db3");
-                _dbConnection = new SQLiteAsyncConnection(dbPath);
-                await _dbConnection.CreateTableAsync<Category>();
+
+                if (_dbConnection == null)
+                {
+                    string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "expense.db3");
+                    _dbConnection = new SQLiteAsyncConnection(dbPath);
+                    await _dbConnection.CreateTableAsync<Category>();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         public async Task<int> Add(Category mod)
